@@ -20,6 +20,7 @@ const double mnoznik_kier = 8.5711/2;
 
 CarControl SimpleDriver::wDrive(CarState cs)
 {
+  calc.update_pos(cs);
   double dir;
   int id_mx = TRACK_SENSORS_NUM/2;
   for(int i = 0; i < TRACK_SENSORS_NUM; i++)
@@ -30,18 +31,26 @@ CarControl SimpleDriver::wDrive(CarState cs)
   //100 - 30
   //200 - 60
   //300 - 270
+  if(cs.getLastLapTime() <= 0)
+  {
+    track.add_new_points(calc.get_point_moved(cs.getTrack(TRACK_SENSORS_NUM/2 - 2), 8),
+                         calc.get_point_moved(cs.getTrack(TRACK_SENSORS_NUM/2 + 2), 8));
+  }
   if((cs.getTrack(id_mx) < 150 && cs.getTotalSpeed() > 260)
     || (cs.getTrack(id_mx) < 100 && cs.getTotalSpeed() > 220)
     || (cs.getTrack(id_mx) < 60 && cs.getTotalSpeed() > 150)
     || (cs.getTrack(id_mx) < 50 && cs.getTotalSpeed() > 120)
     || (cs.getTrack(id_mx) < 40 && cs.getTotalSpeed() > 100)
     || (cs.getTrack(id_mx) < 30 && cs.getTotalSpeed() > 85)
-    || (cs.getTrack(id_mx) < 20 && cs.getTotalSpeed() > 70))
+    || (cs.getTrack(id_mx) < 20 && cs.getTotalSpeed() > 70)
+    || cs.getSpeedX() > 70)
   {
     br = 1;
     acc = 0;
   }
+  //track.car_on_the_track(calc.get_car_position());
   filterABS(cs, br);
+  calc.update_angle(dir);
   return CarControl(acc, br, cs.getGear(), dir, 0.00);
 } 
 

@@ -24,9 +24,10 @@
 #include "CarControl.h"
 #include "SimpleParser.h"
 #include "WrapperBaseDriver.h"
+#include "track_model.h"
+#include "car_calculator.h"
 #include <bits/stdc++.h>
 
-#define PI 3.14159265
 
 using namespace std;
 class SimpleDriver : public WrapperBaseDriver
@@ -60,6 +61,8 @@ private:
 	static const float absRange;
 	// min speed to activate ABS
 	static const float absMinSpeed;
+	Track_model track;
+	CarCalculator calc;
 };
 
 #endif /*SIMPLEDRIVER_H_*/
