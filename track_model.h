@@ -10,7 +10,7 @@ struct Track_model
 	Track_model(){};
 	void add_new_points(std::pair<double, double> left, std::pair<double, double> right)
 	{
-		std::cerr<<"Pozycja "<<left<<"\n";
+		std::cerr<<"Pozycja "<<left<<"                       \r";
 		left_edge.push_back(left);
 		right_edge.push_back(right);
 	}

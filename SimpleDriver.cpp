@@ -27,7 +27,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
     if(cs.getTrack(i) > cs.getTrack(id_mx))
         id_mx = i;
   dir = -(id_mx - TRACK_SENSORS_NUM/2)/static_cast<double>(TRACK_SENSORS_NUM) * mnoznik_kier;
-  double acc = 1, br = 0;
+  double acc = (cs.getSpeedX() > 50 ? 0.5: 1), br = 0;
   //100 - 30
   //200 - 60
   //300 - 270
@@ -45,12 +45,16 @@ CarControl SimpleDriver::wDrive(CarState cs)
     || (cs.getTrack(id_mx) < 20 && cs.getTotalSpeed() > 70)
     || cs.getSpeedX() > 70)
   {
-    br = 1;
+    br = 0;
     acc = 0;
   }
   //track.car_on_the_track(calc.get_car_position());
   filterABS(cs, br);
   calc.update_angle(dir);
+  if(dir < 0)
+    dir = max(dir, -0.2);
+  else
+    dir = min(dir, 0.2);
   return CarControl(acc, br, cs.getGear(), dir, 0.00);
 } 
 

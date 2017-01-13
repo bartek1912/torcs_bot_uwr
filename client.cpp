@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     }
 
     // Print command line option used
-    cout << "***********************************" << endl;
+    /*cout << "***********************************" << endl;
 
     cout << "HOST: "   << hostName    << endl;
 
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 
 
     cout << "TRACKNAME: " << trackName << endl;
-
+*/
     if (stage == BaseDriver::WARMUP)
 		cout << "STAGE: WARMUP" << endl;
 	else if (stage == BaseDriver::QUALIFYING)
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 	else
 		cout << "STAGE: UNKNOWN" << endl;
 
-	cout << "***********************************" << endl;
+//	cout << "***********************************" << endl;
     // Create a socket (UDP on IPv4 protocol)
     socketDescriptor = socket(AF_INET, SOCK_DGRAM, 0);
     if (INVALID(socketDescriptor))
@@ -173,13 +173,13 @@ int main(int argc, char *argv[])
         	float angles[19];
         	d.init(angles);
         	string initString = SimpleParser::stringify(string("init"),angles,19);
-            cout << "Sending id to server: " << id << endl;
+  //          cout << "Sending id to server: " << id << endl;
             initString.insert(0,id);
             #ifdef TORCS_JEST_ZJEBANY
             if(initString.substr(0, 3) != "SCR")
                 initString = "SCR" + initString;
             #endif
-            cout << "Sending init string to the server: " << initString << endl;
+    //        cout << "Sending init string to the server: " << initString << endl;
             if (sendto(socketDescriptor, initString.c_str(), initString.length(), 0,
                        (struct sockaddr *) &serverAddress,
                        sizeof(serverAddress)) < 0)
@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
                 }
 		else
 		{
-                	cout << "Received: " << buf << endl;
+      //          	cout << "Received: " << buf << endl;
 
                 	if (strcmp(buf,"***identified***")==0)
                     		break;

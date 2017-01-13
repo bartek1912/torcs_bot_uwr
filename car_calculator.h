@@ -21,6 +21,8 @@ struct CarCalculator
 		static long double last_speed = 0;
 		pos.first += sinl(angle) * (cs.getSpeedX()) * TIME_TICK * KPTOMS;
 		pos.second += cosl(angle) * (cs.getSpeedX()) * TIME_TICK * KPTOMS;
+		// pos.first += sinl(angle + PI/2) * (cs.getSpeedY()) * TIME_TICK * KPTOMS;
+		// pos.second += cosl(angle + PI/2) * (cs.getSpeedY()) * TIME_TICK * KPTOMS;
 		last_speed = cs.getSpeedX();
 	}
 	void update_angle(long double delta)
