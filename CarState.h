@@ -63,83 +63,81 @@ public:
 
         /* Getter and setter methods */
         
-        float getAngle() const; 
+        float getAngle();
         
         void setAngle(float angle);
         
-        float getCurLapTime() const;
+        float getCurLapTime();
         
         void setCurLapTime(float curLapTime);
         
-        float getDamage() const;
+        float getDamage();
         
         void setDamage(float damage);
         
-        float getDistFromStart() const;
+        float getDistFromStart();
         
         void setDistFromStart(float distFromStart);
         
-        float getDistRaced() const;
+        float getDistRaced();
         
         void setDistRaced(float distRaced);
 
-        float getFocus(int i) const;
+        float getFocus(int i);
 
         void setFocus(int i, float value);
 
-        float getFuel() const;
+        float getFuel();
         
         void setFuel(float fuel);
         
-        int getGear() const;
+        int getGear();
         
         void setGear(int gear);
         
-        float getLastLapTime() const;
+        float getLastLapTime();
         
         void setLastLapTime(float lastLapTime);
         
-        float getOpponents(int i) const;
+        float getOpponents(int i);
         
         void setOpponents(int i, float value);
         
-        int getRacePos() const;
+        int getRacePos();
         
         void setRacePos(int racePos);
         
-        int getRpm() const;
+        int getRpm();
         
         void setRpm(int rpm);
         
-        float getSpeedX() const;
+        float getSpeedX();
         
         void setSpeedX(float speedX);
         
-        float getSpeedY() const;
+        float getSpeedY();
         
         void setSpeedY(float speedY);
         
-        float getSpeedZ() const;
+        float getSpeedZ();
 
         void setSpeedZ(float speedZ);
 
-        float getTrack(int i) const;
+        float getTrack(int i);
         
         void setTrack(int i, float value);
         
-        float getTrackPos() const;
+        float getTrackPos();
         
         void setTrackPos(float trackPos);
         
-        float getWheelSpinVel(int i) const;
+        float getWheelSpinVel(int i);
         
         void setWheelSpinVel(int i, float value);
 
-        float getZ() const;
+        float getZ();
 
         void setZ(float z);
-
-        float getTotalSpeed();
 
 
 };

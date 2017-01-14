@@ -15,9 +15,9 @@
  ***************************************************************************/
 /* Uncomment the following lines under windows */
 //#define WIN32 // maybe not necessary because already define
-#define __DRIVER_CLASS__ SimpleDriver     // put here the name of your driver class
-#define __DRIVER_INCLUDE__ "SimpleDriver.h" // put here the filename of your driver h\\eader
-#define TORCS_JEST_ZJEBANY
+//#define __DRIVER_CLASS__ SimpleDriver     // put here the name of your driver class
+//#define __DRIVER_INCLUDE__ "SimpleDriver.h" // put here the filename of your driver h\\eader
+
 #ifdef WIN32
 #include <WinSock.h>
 #else
@@ -104,15 +104,16 @@ int main(int argc, char *argv[])
 //    if (seed>0)
 //    	srand(seed);
 //    else
-//    	srand(time(NULL));
+	
+	long long int seed = time(NULL);
+	srand(seed);
+	seed = 1ll * serverPort * rand();
+	srand(seed);
 
     hostInfo = gethostbyname(hostName);
     if (hostInfo == NULL)
     {
         cout << "Error: problem interpreting host: " << hostName << "\n";
-        char buff[100] = "\0";
-         herror(buff);
-         cout << "Error str["<<h_errno<<"]: "<<buff<<"\n";
         exit(1);
     }
 
@@ -129,6 +130,7 @@ int main(int argc, char *argv[])
 
     cout << "MAX_EPISODES: " << maxEpisodes << endl;
 
+  	cout << "SEED: " << seed << endl;
 
     cout << "TRACKNAME: " << trackName << endl;
 
@@ -175,10 +177,6 @@ int main(int argc, char *argv[])
         	string initString = SimpleParser::stringify(string("init"),angles,19);
             cout << "Sending id to server: " << id << endl;
             initString.insert(0,id);
-            #ifdef TORCS_JEST_ZJEBANY
-            if(initString.substr(0, 3) != "SCR")
-                initString = "SCR" + initString;
-            #endif
             cout << "Sending init string to the server: " << initString << endl;
             if (sendto(socketDescriptor, initString.c_str(), initString.length(), 0,
                        (struct sockaddr *) &serverAddress,
@@ -245,14 +243,14 @@ int main(int argc, char *argv[])
                 {
                     d.onShutdown();
                     shutdownClient = true;
-                    //cout << "Client Shutdown" << endl;
+                    cout << "Client Shutdown" << endl;
                     break;
                 }
 
                 if (strcmp(buf,"***restart***")==0)
                 {
                     d.onRestart();
-                   // cout << "Client Restart" << endl;
+                    cout << "Client Restart" << endl;
                     break;
                 }
                 /**************************************************
@@ -283,7 +281,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-             //   cout << "** Server did not respond in 1 second.\n";
+                cout << "** Server did not respond in 1 second.\n";
             }
         }
     } while(shutdownClient==false && ( (++curEpisode) != maxEpisodes) );
@@ -310,7 +308,7 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
     maxSteps=0;
     serverPort=3001;
     strcpy(hostName,"localhost");
-    strcpy(id,"championship2010");
+    strcpy(id,"SCR");
 //    noise=false;
 //    noiseAVG=0;
 //    noiseSTD=0.05;
@@ -352,9 +350,9 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
 //    	    	sscanf(argv[i],"seed:%ld",&seed);
 //    	    	i++;
 //    	}
-    	else if (strncmp(argv[i], "trackName:", 6) == 0)
+    	else if (strncmp(argv[i], "track:", 6) == 0)
     	{
-    	    	sscanf(argv[i],"trackName:%s",trackName);
+    	    	sscanf(argv[i],"track:%s",trackName);
     	    	i++;
     	}
     	else if (strncmp(argv[i], "stage:", 6) == 0)

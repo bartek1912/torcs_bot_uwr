@@ -1,7 +1,7 @@
 /***************************************************************************
  
-    file                 : SimpleDriver.h
-    copyright            : (C) 2007 Daniele Loiacono
+    file                 : QLearningDriver.h
+    copyright            : (C) 2016 Jarosław Dzikowski
  
  ***************************************************************************/
 
@@ -13,8 +13,8 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#ifndef SIMPLEDRIVER_H_
-#define SIMPLEDRIVER_H_
+#ifndef QLEARNINGDRIVER_H_
+#define QLEARNINGDRIVER_H_
 
 #include <iostream>
 #include <cmath>
@@ -28,14 +28,14 @@
 
 using namespace std;
 
-class SimpleDriver : public WrapperBaseDriver
+class QLearningDriver : public WrapperBaseDriver
 {
 public:
 	
 	// Constructor
-	SimpleDriver(){stuck=0;clutch=0.0;};
+	QLearningDriver(){stuck=0;clutch=0.0;};
 
-	// SimpleDriver implements a simple and heuristic controller for driving
+	// QLearningDriver implements a simple and heuristic controller for driving
 	virtual CarControl wDrive(CarState cs);
 
 	// Print a shutdown message 
@@ -125,4 +125,4 @@ private:
 	void clutching(CarState &cs, float &clutch);
 };
 
-#endif /*SIMPLEDRIVER_H_*/
+#endif /*QLEARNINGDRIVER_H_*/

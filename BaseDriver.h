@@ -24,8 +24,6 @@ class BaseDriver
 {
 public:
 	
-	typedef enum {Left90 = 0, Left60, Left30, Left15, Left7, Forward, Right7, 
-			Right15, Right30, Right60, Right90} Action;
 	typedef enum{WARMUP,QUALIFYING,RACE,UNKNOWN} tstage;
 
 	tstage stage;
@@ -39,15 +37,9 @@ public:
 	
 	// Initialization of the desired angles for the rangefinders
 	virtual void init(float *angles){
-  		cerr<<"BaseDriver::init\n";
 		for (int i = 0; i < 19; ++i)
 			angles[i]=-90+i*10;
-		int rad = 6;
-		for(int i = 19/2 - rad; i <= 19/2 + rad; i++)
-			angles[i] = (i - 19/2)*5;
-		init2(angles);
 	};
-	virtual void init2(float *angles){}
 
 	// The main function: 
 	//     - the input variable sensors represents the current world sate
@@ -59,5 +51,6 @@ public:
 	
 	// Callback function called at server restart
 	virtual void onRestart(){};
+
 };
 #endif /*BASEDRIVER_H_*/

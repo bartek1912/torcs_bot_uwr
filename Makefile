@@ -1,18 +1,20 @@
 CC            =  g++
-CPPFLAGS      = -Wall -g -std=c++11 
+CPPFLAGS      = -Wall -g -std=c++11
 
 # Uncomment the following line for a verbose client
 #CPPFLAGS      = -Wall -g -D __UDP_CLIENT_VERBOSE__
 
 #Put here the name of your driver class
-DRIVER_CLASS = SimpleDriver
+#DRIVER_CLASS = SimpleDriver
+DRIVER_CLASS = QLearningDriver
+#DRIVER_CLASS = QPolicyDriver
 #Put here the filename of your driver class header 
 DRIVER_INCLUDE = '"$(DRIVER_CLASS).h"' 
 DRIVER_OBJ = $(DRIVER_CLASS).o
 
 EXTFLAGS = -D __DRIVER_CLASS__=$(DRIVER_CLASS) -D __DRIVER_INCLUDE__=$(DRIVER_INCLUDE)
 
-OBJECTS = WrapperBaseDriver.o SimpleParser.o CarState.o CarControl.o $(DRIVER_OBJ)
+OBJECTS = WrapperBaseDriver.o SimpleParser.o CarState.o CarControl.o QLearningConfig.o $(DRIVER_OBJ)
 
 all: $(OBJECTS) client
 
