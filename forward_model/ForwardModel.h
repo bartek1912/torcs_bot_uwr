@@ -18,7 +18,7 @@ struct ForwardModel
 	double steerSteerLock;
 
 	//Lewa i prawa krawędz toru
-	std::pair<std::vector<linalg::vector>, std::vector<linalg::vector> >& track;	
+	//std::pair<std::vector<linalg::vector>, std::vector<linalg::vector> >& track;	
 
 	ForwardModel(
 			linalg::vector pos, 
@@ -27,8 +27,8 @@ struct ForwardModel
 			linalg::vector vel, 
 			int gear, 
 			double clutch,
-			std::array<double, 4> wheelSpeeds,
-			std::pair<std::vector<linalg::vector>, std::vector<linalg::vector> >& track );
+			std::array<double, 4> wheelSpeeds/*,
+			std::pair<std::vector<linalg::vector>, std::vector<linalg::vector> >& track */);
 
 	//resetuje model zaczynajac od danej sytuacji i przywraca fizykę do domyslnych wartosci z konfiguracji
 	void reset(

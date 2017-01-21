@@ -329,7 +329,7 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
     	}
     	else if (strncmp(argv[i], "port:", 5) == 0)
     	{
-    		sscanf(argv[i],"port:%d",&serverPort);
+    		sscanf(argv[i],"port:%ud",&serverPort);
     		i++;
     	}
     	else if (strncmp(argv[i], "id:", 3) == 0)

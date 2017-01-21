@@ -9,9 +9,16 @@ ForwardModel::ForwardModel(
 		linalg::vector vel, 
 		int gear, 
 		double clutch,
-		std::array<double, 4> wheelSpeeds,
-		std::pair<std::vector<linalg::vector>, std::vector<linalg::vector> >& track ) : 
-	pos{pos}, orient{orient}, vel{vel}, rpm{rpm}, gear{gear}, clutch{clutch}, wheelSpeeds{wheelSpeeds}, track{track}
+		std::array<double, 4> wheelSpeeds/*,
+		std::pair<std::vector<linalg::vector>, std::vector<linalg::vector> >& track */) : 
+	pos{pos}, 
+	orient{orient}, 
+	vel{vel}, 
+	rpm{rpm}, 
+	gear{gear}, 
+	clutch{clutch}, 
+	wheelSpeeds(wheelSpeeds)//, 
+	//track{track}
 { 
 	configure(); 
 }

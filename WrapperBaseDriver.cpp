@@ -14,7 +14,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "WrapperBaseDriver.h"
-
+#include "forward_model/ForwardModel.h"
 string 
 WrapperBaseDriver::drive(string sensors)
 {
@@ -23,6 +23,10 @@ WrapperBaseDriver::drive(string sensors)
 	CarControl cc = wDrive(cs);
 	validate_gear(cc, cs);
 	print_debug_out(cc);
+	linalg::vector zero = {0,0};
+	ForwardModel fm(zero, zero, cs.getRpm(), 
+		zero, cs.getGear(), cc.getClutch(), 
+		{.0,.0,.0,.0});
 	return cc.toString();	
 }
 void WrapperBaseDriver::validate_gear(CarControl& cc, const CarState& cs) const
@@ -86,21 +90,6 @@ WrapperBaseDriver::print_debug_in(const CarState& cs) const
 // Initialization of the desired angles for the rangefinders
 void WrapperBaseDriver::init2(float *angles)
 {
-   cerr<<"otwieranie\n";
-	ifstream dane("dane.txt");
-	cerr<<"Inicjalizowanie bazy osobników\n";
-	int length;
-	while(dane>>length)
-	{
-		cerr<<"Osobnik "<<length<<": ";
-		vector<BaseDriver::Action> act;
-		int tmp;
-		for(int i = 0; i < length; i++)
-		{
-			dane>>tmp;
-			act.push_back(static_cast<BaseDriver::Action>(tmp));
-		}
-	}
 }
 
 void 

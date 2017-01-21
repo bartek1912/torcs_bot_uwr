@@ -72,73 +72,74 @@ float
 CarState::getAngle() const
 {
         return angle;
-};
+}
 
 void 
 CarState::setAngle(float angle)
 {
         this->angle = angle;
-};
+}
 
 float 
 CarState::getCurLapTime() const
 {
         return curLapTime;
-};
+}
 
 void 
 CarState::setCurLapTime(float curLapTime)
 {
         this->curLapTime = curLapTime;
-};
+}
 
 float
 CarState::getDamage() const
 {
         return damage;
-};
+}
 
 void
 CarState::setDamage(float damage)
 {
         this->damage = damage;
-};
+}
 
 float
 CarState::getDistFromStart() const
 {
         return distFromStart;
-};
+}
 
 void
 CarState::setDistFromStart(float distFromStart)
 {
         this->distFromStart = distFromStart;
-};
+}
 
 float
 CarState::getDistRaced() const
 {
         return distRaced;
-};
+}
 
 void
 CarState::setDistRaced(float distRaced)
 {
         this->distRaced = distRaced;
-};
+}
 
 float 
 CarState::getTotalSpeed()
 {
     return std::sqrt(pow(getSpeedX(),2) + pow(getSpeedY(),2) + pow(getSpeedZ(),2));
 }
+
 float
 CarState::getFocus(int i) const
 {
         assert(i>=0 && i<FOCUS_SENSORS_NUM);
         return focus[i];
-};
+}
 
 
 void
@@ -147,43 +148,43 @@ CarState::setFocus(int i, float value)
         assert(i>=0 && i<FOCUS_SENSORS_NUM);
         std::cerr<<" focus["<<i<<"] = "<<value<<"; ";
         this->focus[i] = value;
-};
+}
 
 float
 CarState::getFuel() const
 {
         return fuel;
-};
+}
 
 void
 CarState::setFuel(float fuel)
 {
         this->fuel = fuel;
-};
+}
 
 int
 CarState::getGear() const
 {
         return gear;
-};
+}
 
 void
 CarState::setGear(int gear)
 {
         this->gear = gear;
-};
+}
 
 float 
 CarState::getLastLapTime() const
 {
         return lastLapTime;
-};
+}
 
 void 
 CarState::setLastLapTime(float lastLapTime)
 {
         this->lastLapTime = lastLapTime;
-};
+}
 
 float
 CarState::getOpponents(int i) const
@@ -191,82 +192,82 @@ CarState::getOpponents(int i) const
         assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
         return opponents[i];
         
-};
+}
 
 void
 CarState::setOpponents(int i, float value)
 {
         assert(i>=0 && i<OPPONENTS_SENSORS_NUM);
         this->opponents[i] = value;
-};
+}
 
 int
 CarState::getRacePos() const
 {
         return racePos;
-};
+}
 
 void
 CarState::setRacePos(int racePos)
 {
         this->racePos = racePos;
-};
+}
 
 int
 CarState::getRpm() const
 {
         return rpm;
-};
+}
 
 void
 CarState::setRpm(int rpm)
 {
         this->rpm = rpm;
-};
+}
 
 float
 CarState::getSpeedX() const
 {
         return speedX;
-};
+}
 
 void
 CarState::setSpeedX(float speedX)
 {
         this->speedX = speedX;
-};
+}
 
 float
 CarState::getSpeedY() const
 {
         return speedY;
-};
+}
 
 void
 CarState::setSpeedY(float speedY)
 {
         this->speedY = speedY;
-};
+}
 
 float
 CarState::getSpeedZ() const
 {
         return speedZ;
-};
+}
 
 
 void
 CarState::setSpeedZ(float speedZ)
 {
         this->speedZ = speedZ;
-};
+}
 
 float
 CarState::getTrack(int i) const
 {
         assert(i>=0 && i<TRACK_SENSORS_NUM);
         return track[i];
-};
+}
 
 
 void
@@ -274,19 +275,19 @@ CarState::setTrack(int i, float value)
 {
         assert(i>=0 && i<TRACK_SENSORS_NUM);
         this->track[i] = value;
-};
+}
 
 float
 CarState::getTrackPos() const
 {
         return trackPos;
-};
+}
 
 void
 CarState::setTrackPos(float prackPos)
 {
         this->trackPos = trackPos;
-};
+}
 
 float 
 CarState::getWheelSpinVel(int i) const
@@ -306,10 +307,10 @@ float
 CarState::getZ() const
 {
         return z;
-};
+}
 
 void
 CarState::setZ(float z)
 {
     this->z = z;
-};
+}
