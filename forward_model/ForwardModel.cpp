@@ -1,5 +1,7 @@
 #include "ForwardModel.h"
 
+#define SIGN(x) (x < 0 ? -1 : x == 0 ? 0 : 1)
+
 ForwardModel::ForwardModel(
 		linalg::vector pos, 
 		linalg::vector orient,
@@ -46,7 +48,8 @@ void ForwardModel::applyMove(double deltaTime, int gear, double brakes, double a
 
 void ForwardModel::configure()
 {
-
+	steerSteerLock = 0.43f;
+	steerMaxSpeed  = 1.0f;
 }
 
 void ForwardModel::applyGear(int gear)
@@ -64,9 +67,8 @@ void ForwardModel::applyAcceleration(double accel)
 
 }
 
-void ForwardModel::applySteer(double steer)
+void ForwardModel::applySteer(double newSteer)
 {
-
 }
 
 void ForwardModel::applyClutch(double clutch)

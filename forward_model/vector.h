@@ -37,6 +37,20 @@ namespace linalg
 
    };
 
+   //Moj wspanialy dodatek - składowa liniowa oraz kątowa
+   struct transform
+   {
+	   vector lin, ang;
+   };
+
+   //Zachowuje katy modulo 2PI
+   inline void normalize2PI(vector& vec)
+   {
+   	  	vec.x -= floor(vec.x / (2*M_PI)) * 2*M_PI;
+		vec.y -= floor(vec.y / (2*M_PI)) * 2*M_PI;
+		vec.z -= floor(vec.z / (2*M_PI)) * 2*M_PI;
+   }
+
 
    inline vector operator - ( const vector& v )
    {
@@ -131,6 +145,7 @@ namespace linalg
       stream << "[ " << v.x << ", " << v.y << ", " << v.z << " ]";
       return stream;
    }
+
 
 }
 

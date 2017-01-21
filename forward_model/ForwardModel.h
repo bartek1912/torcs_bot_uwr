@@ -12,6 +12,11 @@ struct ForwardModel
 	std::array<double,4> wheelSpeeds;
 
 
+	//Symulacja
+	double steer;
+	double steerMaxSpeed;
+	double steerSteerLock;
+
 	//Lewa i prawa krawędz toru
 	std::pair<std::vector<linalg::vector>, std::vector<linalg::vector> >& track;	
 
