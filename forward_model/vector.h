@@ -7,6 +7,22 @@
 #include <iostream>
 #include <math.h>
 
+const double PI = 3.14159265358979323846;  /**< PI */
+
+/** Angle normalization between 0 and 2 * PI */
+#define NORM0_2PI(x) 				\
+do {						\
+	while ((x) > 2*PI) { (x) -= 2*PI; }	\
+	while ((x) < 0) { (x) += 2*PI; } 	\
+} while (0)
+
+/** Angle normalization between -PI and PI */
+#define NORM_PI_PI(x) 				\
+do {						\
+	while ((x) > PI) { (x) -= 2*PI; }	\
+	while ((x) < -PI) { (x) += 2*PI; } 	\
+} while (0)
+
 namespace linalg 
 {
 
@@ -49,6 +65,14 @@ namespace linalg
    	  	vec.x -= floor(vec.x / (2*M_PI)) * 2*M_PI;
 		vec.y -= floor(vec.y / (2*M_PI)) * 2*M_PI;
 		vec.z -= floor(vec.z / (2*M_PI)) * 2*M_PI;
+   }
+
+   //Zachowuje katy z przedialu [-PI, PI]
+   inline void normalizePI_PI(vector& vec)
+   {
+		NORM_PI_PI(vec.x);
+		NORM_PI_PI(vec.y);
+		NORM_PI_PI(vec.z);
    }
 
 

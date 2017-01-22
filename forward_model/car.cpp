@@ -19,6 +19,8 @@ Car::Car()
 				+ wheels[FRNT_LFT]->pos.lin.y
 				- wheels[REAR_RGT]->pos.lin.y
 				- wheels[REAR_LFT]->pos.lin.y) / 2.0;
+
+	mass = 1150;
 }
 
 void Car::updateAcceleration(double deltaTime)
@@ -79,7 +81,7 @@ void Car::updatePosition(double deltaTime)
 {
 	linalg::vector deltaAng = vel.ang * deltaTime;
 	pos.ang += deltaAng;
-	linalg::normalize2PI(pos.ang);
+	linalg::normalizePI_PI(pos.ang);
 
 	linalg::vector deltaLin = vel.lin * deltaTime;
 	linalg::matrix rotationMatrix = linalg::matrix::rotation(pos.ang.z);
@@ -97,7 +99,17 @@ void Car::updatePosition(double deltaTime)
 
 void Car::updatePhysics(double deltaTime)
 {
+	//Symulacja fizyki kół, która oblicza siły działające na koła
+	UpdateWheels(this, deltaTime);
+
+	//Aktualizacja fizyki całego samochodu, która korzysta z sił kół
 	updateAcceleration(deltaTime);
 	updateVelocity(deltaTime);
 	updatePosition(deltaTime);
+}
+
+void Car::applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear)
+{
+	this->steer->applySteer(steer, deltaTime);
+	this->brakeSystem->applyBrake(brake);
 }
