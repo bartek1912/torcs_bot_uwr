@@ -9,6 +9,7 @@ struct Wheel;
 #include "wheel.h"
 #include "steer.h"
 #include "brake.h"
+#include "engine.h"
 
 
 /* designation */
@@ -61,6 +62,7 @@ struct Car
 	Wheel* wheels[4];
 	Steer* steer;
 	BrakeSystem* brakeSystem;
+	Engine engine;
 
 	double mass;
 	linalg::vector inertia;
@@ -79,7 +81,7 @@ struct Car
 	//2 potem updatePhysics(...)
 	//Po zrobieniu tego masz nowy stan
 	void updatePhysics(double deltaTime);
-	void applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear);	
+	void applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear, int rpm);	
 };
 
 

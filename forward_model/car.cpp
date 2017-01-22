@@ -108,8 +108,12 @@ void Car::updatePhysics(double deltaTime)
 	updatePosition(deltaTime);
 }
 
-void Car::applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear)
+void Car::applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear, int rpm)
 {
 	this->steer->applySteer(steer, deltaTime);
 	this->brakeSystem->applyBrake(brake);
+	auto torque = engine.getTorque(accel, gear, rpm);
+	wheels[REAR_LFT]->spinTorque += torque/2;
+	wheels[REAR_RGT]->spinTorque += torque/2;
+	//this->engine->applyEngine(aceel, gear, clutch);
 }
