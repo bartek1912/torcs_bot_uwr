@@ -86,61 +86,61 @@ float
 CarControl::getAccel() const
 {
         return this->accel;
-};
+}
 
 void 
 CarControl::setAccel (float accel)
 {
         this->accel = accel;
-};
+}
 
 float 
 CarControl::getBrake() const
 {
         return this->brake;
-};
+}
 
 void 
 CarControl::setBrake (float brake)
 {
         this->brake = brake;
-};
+}
 
 int
 CarControl::getGear() const
 {
         return this->gear;
-};
+}
 
 void 
 CarControl::setGear(int gear)
 {
         this->gear = gear;
-};
+}
 
 float 
 CarControl::getSteer() const
 {
         return this->steer;
-};
+}
 
 void 
 CarControl::setSteer(float steer)
 {
         this->steer = steer;
-};
+}
 
 int
 CarControl::getMeta() const
 {
         return this->meta;
-};
+}
 
 void 
 CarControl::setMeta(int meta)
 {
         this->meta = meta;
-};
+}
 
 float
 CarControl::getClutch() const
@@ -158,10 +158,10 @@ int
 CarControl::getFocus()
 { 
         return this->focus;
-};
+}
 
 void
 CarControl::setFocus(int focus)
 { 
         this->focus = focus;
-};
+}
