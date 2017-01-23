@@ -14,12 +14,24 @@
  *                                                                         *
  ***************************************************************************/
 #include "SimpleDriver.h"
+#include "forward_model/car.h"
+#include "forward_model/ForwardModel.h"
+
 const double mnoznik_kier = 8.5711/2;
 
-
+ForwardModel fModel;
 
 CarControl SimpleDriver::wDrive(CarState cs)
 {
+	if(cs.getCurLapTime() > 0)
+	{
+		cout << "Model after simulation:\n\tPosition = " << fModel.getCarState().pos.lin << "\n";
+		cout << "\tSpeed " << fModel.getCarState().vel.lin << "\n";
+		fModel.updateModel(cs);	
+		cout << "Model after update:\n";
+		cout << "\tSpeed " << fModel.getCarState().vel.lin << "\n";
+	}
+	
   calc.update_pos(cs);
   double dir;
   int id_mx = TRACK_SENSORS_NUM/2;
@@ -55,7 +67,13 @@ CarControl SimpleDriver::wDrive(CarState cs)
     dir = max(dir, -0.2);
   else
     dir = min(dir, 0.2);
-  return CarControl(acc, br, cs.getGear(), dir, 0.00);
+
+	CarControl toReturn = CarControl(acc, br, cs.getGear(), dir, 0.00);
+
+	if(cs.getCurLapTime() > 0)
+		fModel.simulate(0.020, toReturn);
+
+  return toReturn;
 } 
 
 
@@ -93,7 +111,32 @@ SimpleDriver::onRestart()
 {
 }
 
-
+void
+SimpleDriver::init2(float* angles)
+{
+	cout << "Stage: ";
+	switch(stage)
+	{
+		case tstage::WARMUP:
+			cout << "WARMUP\n";		
+			cout << "Building track model\n";
+			break;
+		case tstage::QUALIFYING:
+			cout << "QUALIFYING\n";
+			cout << "Drive as fast as possible without falling out of the track\n";
+			break;
+		case tstage::RACE:
+			cout << "RACE\n";
+			cout << "Win the race against\n";
+			break;
+		default:
+			cout << "UNKNOWN\n";
+			break;
+	}
+	
+	//BUG TO SPRAWIA, ZE WHEEL, BRAKESYSTEM I STEER MAJA W SRODKU SMIECI
+	//fModel = ForwardModel();
+}
 
 /* ABS Filter Constants */
 const float SimpleDriver::wheelRadius[4]={0.3179,0.3179,0.3276,0.3276};

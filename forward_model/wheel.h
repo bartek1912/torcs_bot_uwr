@@ -55,6 +55,7 @@ struct Wheel
 
 	Wheel(int index, Car* car);
 	Wheel(const Wheel& wheel);
+	~Wheel();
 
 	void UpdateForces(double deltaTime);
 };

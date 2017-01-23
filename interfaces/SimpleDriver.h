@@ -48,6 +48,9 @@ public:
 	// Print a restart message 
 	virtual void onRestart();
 
+	// We need an init function
+	virtual void init2(float* angles);
+
 private:
 	float filterABS(CarState &cs,float brake) const;
 

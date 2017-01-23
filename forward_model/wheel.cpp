@@ -46,6 +46,11 @@ Wheel::Wheel(int index, Car* car) : index(index), car(car)
 	trackRollResistance = 0.001200; 
 }
 
+Wheel::~Wheel()
+{
+	delete brake;
+}
+
 Wheel::Wheel(const Wheel& wheel)
 {
 	index = wheel.index;
@@ -66,7 +71,7 @@ Wheel::Wheel(const Wheel& wheel)
 	engineTorque = wheel.engineTorque;
 
 	car = wheel.car;
-	brake = new Brake(*wheel.brake);
+	brake = new Brake(*(wheel.brake));
 
 	rollResistance = wheel.rollResistance;
 	force = wheel.force;

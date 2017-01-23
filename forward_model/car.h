@@ -60,6 +60,8 @@ struct Car
 	Car();
 	Car(const Car& car);
 
+	~Car();
+
 	void simulate(double deltaTime, CarControl& c);
 	void set(CarState& cs);
 //private://TODO to powinno być prywatne

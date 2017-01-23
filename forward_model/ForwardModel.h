@@ -10,7 +10,7 @@
 
 struct ForwardModel
 {
-
+	ForwardModel();
 	ForwardModel(CarState& cs);
 
 	void updateModel(CarState& cs);

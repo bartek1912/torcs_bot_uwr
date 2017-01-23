@@ -1,4 +1,5 @@
 #include "brake.h"
+#include <iostream>
 
 BrakeSystem::BrakeSystem(Car* car) : car(car)
 {
@@ -23,6 +24,10 @@ Brake::Brake(int index)
 	pressure = 0;
 	inertia = index < 2 ? 0.1241 : 0.0714;
 	torque = 0;
+}
+
+Brake::~Brake()
+{
 }
 
 Brake::Brake(const Brake& brake)

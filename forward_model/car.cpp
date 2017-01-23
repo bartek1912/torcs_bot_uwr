@@ -151,7 +151,7 @@ Car::Car(const Car& car)
 
 	for(int i=0;i<4;i++)
 	{
-		wheels[i] = new Wheel(*car.wheels[i]);
+		wheels[i] = new Wheel(*(car.wheels[i]));
 		wheels[i]->car = this;
 	}
 
@@ -168,4 +168,15 @@ Car::Car(const Car& car)
 	wheelbase = car.wheelbase;
 	wheeltrack = car.wheeltrack;
 	dimensions = car.dimensions;
+}
+
+Car::~Car()
+{
+	for(int i=0;i<4;i++)
+	{
+		delete wheels[i];
+	}
+
+	delete steer;
+	delete brakeSystem;
 }

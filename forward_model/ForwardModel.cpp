@@ -1,5 +1,8 @@
 #include "ForwardModel.h"
 
+ForwardModel::ForwardModel() : car(Car())
+{}
+
 ForwardModel::
 	ForwardModel(CarState& cs):
 	car()

@@ -33,6 +33,7 @@ struct Brake
 
 	Brake(int index);
 	Brake(const Brake& brake);
+	~Brake();
 };
 
 #endif //__BRAKE_H__
