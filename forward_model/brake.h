@@ -2,7 +2,6 @@
 #define __BRAKE_H__
 
 struct Car;
-#include "car.h"
 
 struct BrakeSystem
 {

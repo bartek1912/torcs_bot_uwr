@@ -1,4 +1,5 @@
 #include "steer.h"
+#include "car.h"
 
 Steer::Steer(Car* car) : car(car) 
 {
@@ -36,11 +37,11 @@ void Steer::applySteer(double newSteer, double deltaTime)
 	steer2 = atan2((car->wheelbase * tanSteer) , (car->wheelbase - tanSteer * car->wheeltrack));
 
 	if (steer > 0) {
-		car->wheels[FRNT_RGT]->steer = steer2;
-		car->wheels[FRNT_LFT]->steer = steer;
+		car->wheels[FRNT_RGT].steer = steer2;
+		car->wheels[FRNT_LFT].steer = steer;
 	} else {
-		car->wheels[FRNT_RGT]->steer = steer;
-		car->wheels[FRNT_LFT]->steer = -steer2;
+		car->wheels[FRNT_RGT].steer = steer;
+		car->wheels[FRNT_LFT].steer = -steer2;
 	}
 }
 

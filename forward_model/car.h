@@ -3,10 +3,6 @@
 #include "CarState.h"
 #include "CarControl.h"
 
-struct Steer;
-struct BrakeSystem;
-struct Wheel;
-
 #include "vector.h"
 #include "wheel.h"
 #include "steer.h"
@@ -59,8 +55,7 @@ struct Car
 {
 	Car();
 	Car(const Car& car);
-
-	~Car();
+	Car& operator =(const Car& car);
 
 	void simulate(double deltaTime, CarControl& c);
 	void set(CarState& cs);
@@ -83,10 +78,10 @@ struct Car
 	linalg::transform vel;
 	linalg::transform acc;
 
-	Wheel* wheels[4];
-	Steer* steer;
-	BrakeSystem* brakeSystem;
+	Steer steer;
+	BrakeSystem brakeSystem;
 	Engine engine;
+	Wheel wheels[4];
 
 	double mass;
 	linalg::vector inertia;

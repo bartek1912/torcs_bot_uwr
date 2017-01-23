@@ -5,8 +5,6 @@ struct Brake;
 struct Car;
 
 #include "vector.h"
-#include "car.h"
-#include "brake.h"
 
 struct Wheel
 {
@@ -55,6 +53,7 @@ struct Wheel
 
 	Wheel(int index, Car* car);
 	Wheel(const Wheel& wheel);
+	Wheel& operator = (const Wheel&);// = delete;
 	~Wheel();
 
 	void UpdateForces(double deltaTime);

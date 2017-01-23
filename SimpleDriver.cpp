@@ -14,7 +14,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "SimpleDriver.h"
-#include "forward_model/car.h"
 #include "forward_model/ForwardModel.h"
 
 const double mnoznik_kier = 8.5711/2;
@@ -135,7 +134,7 @@ SimpleDriver::init2(float* angles)
 	}
 	
 	//BUG TO SPRAWIA, ZE WHEEL, BRAKESYSTEM I STEER MAJA W SRODKU SMIECI
-	//fModel = ForwardModel();
+	fModel = ForwardModel();
 }
 
 /* ABS Filter Constants */

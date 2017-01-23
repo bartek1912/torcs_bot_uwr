@@ -1,4 +1,5 @@
 #include "wheel.h"
+#include "car.h"
 
 Wheel::Wheel(int index, Car* car) : index(index), car(car)
 {
@@ -91,6 +92,47 @@ Wheel::Wheel(const Wheel& wheel)
 	prevFt = wheel.prevFt;
 }
 
+Wheel& Wheel::operator = (const Wheel& wheel)
+{
+	index = wheel.index;
+	pos = wheel.pos;
+	globalPos = wheel.globalPos;
+
+	radius = wheel.radius;
+	frictionCoeff = wheel.frictionCoeff;
+	mass = wheel.mass;
+
+	weightOnWheel = wheel.weightOnWheel;
+	inertia = wheel.inertia;
+
+	spinVel = wheel.spinVel;
+	prespinVel = wheel.prespinVel;
+
+	spinTorque = wheel.spinTorque;
+	engineTorque = wheel.engineTorque;
+
+	car = wheel.car;
+	brake = new Brake(*wheel.brake);
+
+	rollResistance = wheel.rollResistance;
+	force = wheel.force;
+
+	steer = wheel.steer;
+
+	mfB = wheel.mfB;
+	mfC = wheel.mfC;
+	mfE = wheel.mfE;
+
+	simSkidFactor = wheel.simSkidFactor;
+	averageTrackFriction = wheel.averageTrackFriction;
+	averageOutOfTrackFriction = wheel.averageOutOfTrackFriction;
+	trackRollResistance = wheel.trackRollResistance;
+
+	prevFn = wheel.prevFn;
+	prevFt = wheel.prevFt;
+	return (*this);
+}
+
 void Wheel::UpdateForces(double deltaTime)
 {
 	double angleZ = steer + pos.ang.z;
@@ -167,7 +209,7 @@ void UpdateFreeWheels(Car* car, int axleNumber, double deltaTime)
 	double ndot;		// rotation acceleration
 
 	for (i = axleNumber * 2; i < axleNumber * 2 + 2; i++) {
-		wheel = car->wheels[i];
+		wheel = &car->wheels[i];
 
 		ndot = deltaTime * wheel->spinTorque / wheel->inertia;
 		wheel->spinVel -= ndot;
@@ -191,7 +233,7 @@ void UpdatePropelledWheels(Car* car, int axleNumber, double deltaTime)
 	double ndot;		// rotation acceleration
 
 	for (i = axleNumber * 2; i < axleNumber * 2 + 2; i++) {
-		wheel = car->wheels[i];
+		wheel = &car->wheels[i];
 
 		ndot = deltaTime * wheel->engineTorque / wheel->inertia;
 		wheel->spinVel += ndot;
@@ -216,7 +258,7 @@ void UpdateWheelsRotation(Car* car, double deltaTime)
 	Wheel *wheel;
 
 	for (i = 0; i < 4; i++) {
-		wheel = car->wheels[i];
+		wheel = &car->wheels[i];
 
 		RELAXATION2(wheel->spinVel, wheel->prespinVel, 50.0f);
 	}
@@ -225,7 +267,7 @@ void UpdateWheelsRotation(Car* car, double deltaTime)
 void UpdateWheels(Car* car, double deltaTime)
 {
 	for(int i =0; i<4;i++)
-		car->wheels[i]->UpdateForces(deltaTime);
+		car->wheels[i].UpdateForces(deltaTime);
 
 	UpdatePropelledWheels(car, REAR, deltaTime);
 	UpdateFreeWheels(car, FRNT, deltaTime);

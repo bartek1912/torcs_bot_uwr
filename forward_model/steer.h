@@ -3,7 +3,7 @@
 
 
 #include "vector.h"
-#include "car.h"
+class Car;
 
 
 struct Steer

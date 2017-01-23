@@ -2,23 +2,19 @@
 #include "matrix.h"
 
 Car::Car()
+:steer(this),
+brakeSystem(this),
+wheels{Wheel(0, this),Wheel(1, this),Wheel(2, this),Wheel(3, this)}
 {
-	brakeSystem = new BrakeSystem(this);
-	for(int i=0;i<4;i++)
-	{
-		wheels[i] = new Wheel(i, this);
-	}
-	steer = new Steer(this);
+	wheelbase = (wheels[FRNT_RGT].pos.lin.x 
+				+ wheels[FRNT_LFT].pos.lin.x
+				- wheels[REAR_RGT].pos.lin.x
+				- wheels[REAR_LFT].pos.lin.x) / 2.0;
 
-	wheelbase = (wheels[FRNT_RGT]->pos.lin.x 
-				+ wheels[FRNT_LFT]->pos.lin.x
-				- wheels[REAR_RGT]->pos.lin.x
-				- wheels[REAR_LFT]->pos.lin.x) / 2.0;
-
-	wheeltrack = (wheels[FRNT_RGT]->pos.lin.y 
-				+ wheels[FRNT_LFT]->pos.lin.y
-				- wheels[REAR_RGT]->pos.lin.y
-				- wheels[REAR_LFT]->pos.lin.y) / 2.0;
+	wheeltrack = (wheels[FRNT_RGT].pos.lin.y 
+				+ wheels[FRNT_LFT].pos.lin.y
+				- wheels[REAR_RGT].pos.lin.y
+				- wheels[REAR_LFT].pos.lin.y) / 2.0;
 
 	mass = 1150;
 
@@ -36,7 +32,7 @@ void Car::set(CarState& cs)
 	vel.lin = linalg::vector(cs.getSpeedX(), cs.getSpeedY(), 0 /*cs.getSpeedZ*/);	
 	for(int i=0; i<4;i++)
 	{
-		wheels[i]->spinVel = cs.getWheelSpinVel(i);
+		wheels[i].spinVel = cs.getWheelSpinVel(i);
 	}
 	engine.setRpm(cs.getRpm());
 	engine.setGear(cs.getGear());
@@ -55,8 +51,8 @@ void Car::updateAcceleration(double deltaTime)
 
 	for(int i=0;i<4;i++)
 	{
-		totalForce += wheels[i]->force;
-		totalTorque += linalg::crossproduct(wheels[i]->pos.lin, wheels[i]->force);
+		totalForce += wheels[i].force;
+		totalTorque += linalg::crossproduct(wheels[i].pos.lin, wheels[i].force);
 	}
 
 
@@ -70,7 +66,7 @@ void Car::updateAcceleration(double deltaTime)
 
 	for(int i = 0; i < 4; i++)
 	{
-		R += wheels[i]->rollResistance;
+		R += wheels[i].rollResistance;
 	}
 	if (speed > 0.00001) {
 		//Rv to "znormalizowana" przez predkosc sila, sluzy do skalowania na oś X i Y
@@ -117,7 +113,7 @@ void Car::updatePosition(double deltaTime)
 	//Zaktualizowac global pozycje kol
 	for(int i=0;i<4;i++)
 	{
-		wheels[i]->globalPos.lin = pos.lin + rotationMatrix * wheels[i]->pos.lin; 
+		wheels[i].globalPos.lin = pos.lin + rotationMatrix * wheels[i].pos.lin; 
 		//wheels[i]->globalPos.ang nas nie obchodzi
 	}
 }
@@ -135,33 +131,31 @@ void Car::updatePhysics(double deltaTime)
 
 void Car::applyControl(double deltaTime, double steer, double brake, double accel)
 {
-	this->steer->applySteer(steer, deltaTime);
-	this->brakeSystem->applyBrake(brake);
+	this->steer.applySteer(steer, deltaTime);
+	this->brakeSystem.applyBrake(brake);
 	auto torque = engine.getTorque(accel);
-	wheels[REAR_LFT]->engineTorque += torque/2;
-	wheels[REAR_RGT]->engineTorque += torque/2;
+	wheels[REAR_LFT].engineTorque += torque/2;
+	wheels[REAR_RGT].engineTorque += torque/2;
 	//this->engine->applyEngine(aceel, gear, clutch);
 }
 
 Car::Car(const Car& car)
+:steer(car.steer),
+brakeSystem(car.brakeSystem),
+engine(car.engine),
+wheels{car.wheels[0], car.wheels[1], car.wheels[2], car.wheels[3]}
 {
 	pos = car.pos;
 	vel = car.vel;
 	acc = car.acc;
 
 	for(int i=0;i<4;i++)
-	{
-		wheels[i] = new Wheel(*(car.wheels[i]));
-		wheels[i]->car = this;
-	}
+		wheels[i].car = this;
 
-	brakeSystem = new BrakeSystem(*car.brakeSystem);
-	brakeSystem->car = this;
+	brakeSystem.car = this;
 
-	steer = new Steer(*car.steer);
-	steer->car = this;
+	steer.car = this;
 
-	engine = Engine(car.engine);
 
 	mass = car.mass;
 	inertia = car.inertia;
@@ -170,13 +164,30 @@ Car::Car(const Car& car)
 	dimensions = car.dimensions;
 }
 
-Car::~Car()
+Car& Car::operator =(const Car& car)
 {
-	for(int i=0;i<4;i++)
-	{
-		delete wheels[i];
-	}
+	steer = car.steer;
+	brakeSystem = car.brakeSystem;
+	engine = car.engine;
+	//wheels = car.wheels;//gdyby było vectorem
+	for(int i = 0; i < 4; i++)
+		wheels[i] = car.wheels[i];
+	pos = car.pos;
+	vel = car.vel;
+	acc = car.acc;
 
-	delete steer;
-	delete brakeSystem;
+	for(int i=0;i<4;i++)
+		wheels[i].car = this;
+
+	brakeSystem.car = this;
+
+	steer.car = this;
+
+
+	mass = car.mass;
+	inertia = car.inertia;
+	wheelbase = car.wheelbase;
+	wheeltrack = car.wheeltrack;
+	dimensions = car.dimensions;
+	return *this;
 }

@@ -1,4 +1,5 @@
 #include "brake.h"
+#include "car.h"
 #include <iostream>
 
 BrakeSystem::BrakeSystem(Car* car) : car(car)
@@ -44,12 +45,12 @@ Brake::Brake(const Brake& brake)
 void BrakeSystem::applyBrake(double brake)
 {
 	brake *= maxPressure;
-	car->wheels[FRNT_RGT]->brake->pressure = car->wheels[FRNT_LFT]->brake->pressure = brake * repartition;
-	car->wheels[REAR_RGT]->brake->pressure = car->wheels[REAR_LFT]->brake->pressure = brake * (1-repartition);
+	car->wheels[FRNT_RGT].brake->pressure = car->wheels[FRNT_LFT].brake->pressure = brake * repartition;
+	car->wheels[REAR_RGT].brake->pressure = car->wheels[REAR_LFT].brake->pressure = brake * (1-repartition);
 
 	for(int i=0;i<4;i++)
 	{
-		Brake* brake = car->wheels[i]->brake;
+		Brake* brake = car->wheels[i].brake;
 		//Promien * siła tarcia = moment siły
 		brake->torque = brake->radius * (brake->pressure * brake->area * brake->frictionCoeff);
 	}
