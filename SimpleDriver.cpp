@@ -29,6 +29,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
 		fModel.updateModel(cs);	
 		cout << "Model after update:\n";
 		cout << "\tSpeed " << fModel.getCarState().vel.lin << "\n";
+    cout << "\e[A\e[A\e[A\e[A\e[A\r";
 	}
 	
   calc.update_pos(cs);
