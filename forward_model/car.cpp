@@ -21,6 +21,13 @@ Car::Car()
 				- wheels[REAR_LFT]->pos.lin.y) / 2.0;
 
 	mass = 1150;
+
+	dimensions = {4.7, 1.9, 1.2};
+	inertia = 
+		{dimensions.y * dimensions.y + dimensions.z * dimensions.z,
+		dimensions.x * dimensions.x + dimensions.z * dimensions.z,
+		dimensions.x * dimensions.x + dimensions.y * dimensions.y} ; 
+	inertia *= (mass / 12);
 }
 
 void Car::updateAcceleration(double deltaTime)
@@ -112,4 +119,11 @@ void Car::applyControl(double deltaTime, double steer, double brake, double acce
 {
 	this->steer->applySteer(steer, deltaTime);
 	this->brakeSystem->applyBrake(brake);
+}
+
+Car* copy(Car* car)
+{
+	Car* newCar = new Car();
+	//TODO naprawic to
+	return newCar;
 }

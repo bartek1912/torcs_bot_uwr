@@ -68,7 +68,11 @@ struct Car
 	double wheelbase;
 	double wheeltrack;
 
+	linalg::vector dimensions;
+
 	Car();
+
+	friend Car* copy(Car* car);
 
 	void updateAcceleration(double deltaTime);
 	void updateVelocity(double deltaTime);
@@ -82,6 +86,7 @@ struct Car
 	void applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear);	
 };
 
+Car* copy(Car* car);
 
 
 #endif //__CAR_H__

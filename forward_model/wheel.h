@@ -31,6 +31,7 @@ struct Wheel
 	double prespinVel;
 
 	double spinTorque;
+	double engineTorque;
 	//Radiany?
 	double steer;
 

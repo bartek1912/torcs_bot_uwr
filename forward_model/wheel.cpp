@@ -130,6 +130,33 @@ void UpdateFreeWheels(Car* car, int axleNumber, double deltaTime)
 	}
 }
 
+void UpdatePropelledWheels(Car* car, int axleNumber, double deltaTime)
+{
+	int i;
+	Wheel* wheel;
+	double BrTq;		// brake torque
+	double ndot;		// rotation acceleration
+
+	for (i = axleNumber * 2; i < axleNumber * 2 + 2; i++) {
+		wheel = car->wheels[i];
+
+		ndot = deltaTime * wheel->engineTorque / wheel->inertia;
+		wheel->spinVel += ndot;
+
+		ndot = deltaTime * wheel->spinTorque / wheel->inertia;
+		wheel->spinVel -= ndot;
+
+		BrTq = - SIGN(wheel->spinVel) * wheel->brake->torque;
+		ndot = deltaTime * BrTq / wheel->inertia;
+
+		if (fabs(ndot) > fabs(wheel->spinVel)) {
+			ndot = -wheel->spinVel;
+		}
+
+		wheel->spinVel += ndot;
+	}
+}
+
 void UpdateWheelsRotation(Car* car, double deltaTime)
 {
 	int i;
@@ -147,6 +174,7 @@ void UpdateWheels(Car* car, double deltaTime)
 	for(int i =0; i<4;i++)
 		car->wheels[i]->UpdateForces(deltaTime);
 
-	UpdateWheelsRotation(car, deltaTime);
+	UpdatePropelledWheels(car, REAR, deltaTime);
 	UpdateFreeWheels(car, FRNT, deltaTime);
+	UpdateWheelsRotation(car, deltaTime);
 }
