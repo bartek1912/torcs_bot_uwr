@@ -1,94 +1,21 @@
 #include "ForwardModel.h"
 
-#define SIGN(x) (x < 0 ? -1 : x == 0 ? 0 : 1)
+ForwardModel::
+	ForwardModel(CarState& cs):
+	car()
+{ }
 
-ForwardModel::ForwardModel(
-		linalg::vector pos, 
-		linalg::vector orient,
-		double rpm, 
-		linalg::vector vel, 
-		int gear, 
-		double clutch,
-		std::array<double, 4> wheelSpeeds/*,
-		std::pair<std::vector<linalg::vector>, std::vector<linalg::vector> >& track */) : 
-	pos{pos}, 
-	orient{orient}, 
-	vel{vel}, 
-	rpm{rpm}, 
-	gear{gear}, 
-	clutch{clutch}, 
-	wheelSpeeds(wheelSpeeds)//, 
-	//track{track}
-{ 
-	configure(); 
+void ForwardModel::updateModel(CarState& cs)
+{
+	car.set(cs);
 }
 
-void ForwardModel::reset(
-		linalg::vector pos,
-		linalg::vector orient,
-		double rpm,
-		linalg::vector vel,
-		int gear,
-		double clutch,
-		std::array<double, 4> wheelSpeeds)
+void ForwardModel::simulate(double deltaTime, CarControl& c)
 {
-	this->pos = pos;
-	this->orient = orient;
-	this->rpm = rpm;
-	this->vel = vel;
-	this->gear = gear;
-	this->clutch = clutch;
-	this->wheelSpeeds = wheelSpeeds;
-
-	configure();	
+	car.simulate(deltaTime, c);
 }
 
-void ForwardModel::applyMove(double deltaTime, int gear, double brakes, double accel, double steer, double clutch)
+Car ForwardModel::getCarState()
 {
-	applyGear(gear);
-	applyBrakes(brakes);
-	applyAcceleration(accel);
-	applySteer(steer);
-	applyClutch(clutch);
-	simulateTimestep(deltaTime);
-}
-
-void ForwardModel::configure()
-{
-	steerSteerLock = 0.43f;
-	steerMaxSpeed  = 1.0f;
-}
-
-void ForwardModel::applyGear(int gear)
-{
-
-}
-
-void ForwardModel::applyBrakes(double brakes)
-{
-
-}
-
-void ForwardModel::applyAcceleration(double accel)
-{
-
-}
-
-void ForwardModel::applySteer(double newSteer)
-{
-}
-
-void ForwardModel::applyClutch(double clutch)
-{
-
-}
-
-void ForwardModel::simulateTimestep(double deltaTime)
-{
-
-}
-
-bool ForwardModel::isOutOfTrack()
-{
-	return false;
+	return car;
 }

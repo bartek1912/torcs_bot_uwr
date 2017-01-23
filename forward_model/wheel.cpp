@@ -11,6 +11,14 @@ Wheel::Wheel(int index, Car* car) : index(index), car(car)
 	inertia += brake->inertia;
 
 	steer = 0;
+
+	spinVel = 0;
+	prespinVel = 0;
+	
+	spinTorque = 0;
+	engineTorque = 0;
+	rollResistance = 0;
+	
 	
 	if(index < 2)
 	{

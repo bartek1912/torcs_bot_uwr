@@ -1,5 +1,5 @@
 CC            =  g++
-CPPFLAGS      = -Wall -g -pedantic -std=c++11 
+CPPFLAGS      = -Wall -g -pedantic -std=c++11 -Iinterfaces 
 
 # Uncomment the following line for a verbose client
 #CPPFLAGS      = -Wall -g -D __UDP_CLIENT_VERBOSE__
@@ -9,8 +9,8 @@ DRIVER_CLASS = SimpleDriver
 #Put here the filename of your driver class header 
 DRIVER_INCLUDE = '"$(DRIVER_CLASS).h"' 
 DRIVER_OBJ = $(DRIVER_CLASS).o
-FORWARD_MODEL_LOCATIONS = forward_model/matrix.o forward_model/car.o forward_model/steer.o forward_model/brake.o forward_model/wheel.o forward_model/quaternion.o forward_model/ForwardModel.o
-FORWARD_MODEL_LIST = matrix.o car.o steer.o brake.o wheel.o quaternion.o ForwardModel.o
+FORWARD_MODEL_LOCATIONS = forward_model/matrix.o forward_model/car.o forward_model/steer.o forward_model/brake.o forward_model/wheel.o forward_model/quaternion.o forward_model/ForwardModel.o forward_model/engine.o
+FORWARD_MODEL_LIST = matrix.o car.o steer.o brake.o wheel.o quaternion.o ForwardModel.o engine.o
 
 EXTFLAGS = -D __DRIVER_CLASS__=$(DRIVER_CLASS) -D __DRIVER_INCLUDE__=$(DRIVER_INCLUDE)
 

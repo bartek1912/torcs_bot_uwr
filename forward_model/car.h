@@ -1,5 +1,7 @@
 #ifndef __CAR_H__
 #define __CAR_H__
+#include "CarState.h"
+#include "CarControl.h"
 
 struct Steer;
 struct BrakeSystem;
@@ -9,6 +11,7 @@ struct Wheel;
 #include "wheel.h"
 #include "steer.h"
 #include "brake.h"
+#include "engine.h"
 
 
 /* designation */
@@ -54,25 +57,10 @@ do {								\
 
 struct Car
 {
-	linalg::transform pos;
-	linalg::transform vel;
-	linalg::transform acc;
-
-	Wheel* wheels[4];
-	Steer* steer;
-	BrakeSystem* brakeSystem;
-
-	double mass;
-	linalg::vector inertia;
-
-	double wheelbase;
-	double wheeltrack;
-
-	linalg::vector dimensions;
-
 	Car();
-
-	friend Car* copy(Car* car);
+	void simulate(double delta, CarControl& c);
+	void set(CarState& cs);
+//private://TODO to powinno być prywatne
 
 	void updateAcceleration(double deltaTime);
 	void updateVelocity(double deltaTime);
@@ -83,7 +71,26 @@ struct Car
 	//2 potem updatePhysics(...)
 	//Po zrobieniu tego masz nowy stan
 	void updatePhysics(double deltaTime);
-	void applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear);	
+	void applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear, int rpm);	
+
+	linalg::transform pos;
+	linalg::transform vel;
+	linalg::transform acc;
+
+	Wheel* wheels[4];
+	Steer* steer;
+	BrakeSystem* brakeSystem;
+	Engine engine;
+
+	double mass;
+	linalg::vector inertia;
+
+	double wheelbase;
+	double wheeltrack;
+
+	linalg::vector dimensions;
+
+	friend Car* copy(Car* car);
 };
 
 Car* copy(Car* car);

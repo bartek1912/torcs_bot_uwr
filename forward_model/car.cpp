@@ -30,6 +30,17 @@ Car::Car()
 	inertia *= (mass / 12);
 }
 
+void Car::set(CarState& cs)
+{
+	//
+}
+
+void Car::simulate(double delta, CarControl& c)
+{
+	//applyControl()
+	//updatePhysics()
+}
+
 void Car::updateAcceleration(double deltaTime)
 {
 	linalg::vector totalForce;
@@ -115,10 +126,14 @@ void Car::updatePhysics(double deltaTime)
 	updatePosition(deltaTime);
 }
 
-void Car::applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear)
+void Car::applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear, int rpm)
 {
 	this->steer->applySteer(steer, deltaTime);
 	this->brakeSystem->applyBrake(brake);
+	auto torque = engine.getTorque(accel, gear, rpm);
+	wheels[REAR_LFT]->engineTorque += torque/2;
+	wheels[REAR_RGT]->engineTorque += torque/2;
+	//this->engine->applyEngine(aceel, gear, clutch);
 }
 
 Car* copy(Car* car)

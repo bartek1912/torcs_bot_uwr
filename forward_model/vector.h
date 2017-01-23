@@ -57,6 +57,9 @@ namespace linalg
    struct transform
    {
 	   vector lin, ang;
+
+	   transform() : lin({}), ang({})
+	   { }
    };
 
    //Zachowuje katy modulo 2PI
