@@ -1,5 +1,5 @@
 CC            =  g++
-CPPFLAGS      = -Wall -g -pedantic -std=c++11 
+CPPFLAGS      = -Wall -g -pedantic -std=c++11 -Iinterfaces 
 
 # Uncomment the following line for a verbose client
 #CPPFLAGS      = -Wall -g -D __UDP_CLIENT_VERBOSE__

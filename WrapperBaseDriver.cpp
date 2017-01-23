@@ -24,9 +24,7 @@ WrapperBaseDriver::drive(string sensors)
 	validate_gear(cc, cs);
 	print_debug_out(cc);
 	linalg::vector zero = {0,0};
-	ForwardModel fm(zero, zero, cs.getRpm(), 
-		zero, cs.getGear(), cc.getClutch(), 
-		{.0,.0,.0,.0});
+	ForwardModel fm(cs);
 	return cc.toString();	
 }
 void WrapperBaseDriver::validate_gear(CarControl& cc, const CarState& cs) const

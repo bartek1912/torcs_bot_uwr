@@ -1,3 +1,5 @@
+#ifndef ENGINE_H_
+#define ENGINE_H_
 #include <vector>
 using namespace std;
 class Engine
@@ -9,3 +11,4 @@ public:
 	double getTorque(double, int, double);
 	int getNewRpm(int rpm);
 };
+#endif

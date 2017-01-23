@@ -1,5 +1,7 @@
 #ifndef __CAR_H__
 #define __CAR_H__
+#include "CarState.h"
+#include "CarControl.h"
 
 struct Steer;
 struct BrakeSystem;
@@ -55,6 +57,22 @@ do {								\
 
 struct Car
 {
+	Car(CarState& cs);
+	void simulate(double delta, CarControl& c);
+	void set(CarState& cs);
+//private://TODO to powinno być prywatne
+
+	void updateAcceleration(double deltaTime);
+	void updateVelocity(double deltaTime);
+	void updatePosition(double deltaTime);
+
+	//To jest taki jakby interfejs z ktorego sie powinno korzystac
+	//1 najpierw applyControl(...)
+	//2 potem updatePhysics(...)
+	//Po zrobieniu tego masz nowy stan
+	void updatePhysics(double deltaTime);
+	void applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear, int rpm);	
+
 	linalg::transform pos;
 	linalg::transform vel;
 	linalg::transform acc;
@@ -70,18 +88,6 @@ struct Car
 	double wheelbase;
 	double wheeltrack;
 
-	Car();
-
-	void updateAcceleration(double deltaTime);
-	void updateVelocity(double deltaTime);
-	void updatePosition(double deltaTime);
-
-	//To jest taki jakby interfejs z ktorego sie powinno korzystac
-	//1 najpierw applyControl(...)
-	//2 potem updatePhysics(...)
-	//Po zrobieniu tego masz nowy stan
-	void updatePhysics(double deltaTime);
-	void applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear, int rpm);	
 };
 
 

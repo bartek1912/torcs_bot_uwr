@@ -1,7 +1,7 @@
 #include "car.h"
 #include "matrix.h"
 
-Car::Car()
+Car::Car(CarState& cs)
 {
 	brakeSystem = new BrakeSystem(this);
 	for(int i=0;i<4;i++)
@@ -21,6 +21,17 @@ Car::Car()
 				- wheels[REAR_LFT]->pos.lin.y) / 2.0;
 
 	mass = 1150;
+	set(cs);
+}
+void Car::set(CarState& cs)
+{
+	//
+}
+
+void Car::simulate(double delta, CarControl& c)
+{
+	//applyControl()
+	//updatePhysics()
 }
 
 void Car::updateAcceleration(double deltaTime)
