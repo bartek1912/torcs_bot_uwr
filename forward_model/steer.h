@@ -15,6 +15,7 @@ struct Steer
 	Car* car;	
 	
 	Steer(Car* car);
+	Steer(const Steer& steer);
 
 	void applySteer(double newSteer, double deltaTime);
 };

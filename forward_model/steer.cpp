@@ -7,6 +7,15 @@ Steer::Steer(Car* car) : car(car)
 	maxSpeed = 1.0;
 }
 
+Steer::Steer(const Steer& steer)
+{
+	this->steer = steer.steer;
+	steerLock = steer.steerLock;
+	maxSpeed = steer.maxSpeed;
+
+	car = steer.car;
+}
+
 void Steer::applySteer(double newSteer, double deltaTime)
 {
 	double oldSteer, steer2;

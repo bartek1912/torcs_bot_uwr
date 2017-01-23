@@ -6,6 +6,14 @@ BrakeSystem::BrakeSystem(Car* car) : car(car)
 	repartition = 0.54;
 }
 
+BrakeSystem::BrakeSystem(const BrakeSystem& brakeSystem)
+{
+	repartition = brakeSystem.repartition;
+	maxPressure = brakeSystem.maxPressure;
+
+	car = brakeSystem.car;
+}
+
 Brake::Brake(int index)
 {
 	diameter = index < 2 ? 0.038 : 0.030;
@@ -15,6 +23,17 @@ Brake::Brake(int index)
 	pressure = 0;
 	inertia = index < 2 ? 0.1241 : 0.0714;
 	torque = 0;
+}
+
+Brake::Brake(const Brake& brake)
+{
+	diameter = brake.diameter;
+	radius = brake.radius;
+	area = brake.area;
+	frictionCoeff = brake.frictionCoeff;
+	pressure = brake.pressure;
+	inertia = brake.inertia;
+	torque = brake.torque;
 }
 
 void BrakeSystem::applyBrake(double brake)

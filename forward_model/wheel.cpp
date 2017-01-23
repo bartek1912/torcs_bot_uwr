@@ -46,6 +46,46 @@ Wheel::Wheel(int index, Car* car) : index(index), car(car)
 	trackRollResistance = 0.001200; 
 }
 
+Wheel::Wheel(const Wheel& wheel)
+{
+	index = wheel.index;
+	pos = wheel.pos;
+	globalPos = wheel.globalPos;
+
+	radius = wheel.radius;
+	frictionCoeff = wheel.frictionCoeff;
+	mass = wheel.mass;
+
+	weightOnWheel = wheel.weightOnWheel;
+	inertia = wheel.inertia;
+
+	spinVel = wheel.spinVel;
+	prespinVel = wheel.prespinVel;
+
+	spinTorque = wheel.spinTorque;
+	engineTorque = wheel.engineTorque;
+
+	car = wheel.car;
+	brake = new Brake(*wheel.brake);
+
+	rollResistance = wheel.rollResistance;
+	force = wheel.force;
+
+	steer = wheel.steer;
+
+	mfB = wheel.mfB;
+	mfC = wheel.mfC;
+	mfE = wheel.mfE;
+
+	simSkidFactor = wheel.simSkidFactor;
+	averageTrackFriction = wheel.averageTrackFriction;
+	averageOutOfTrackFriction = wheel.averageOutOfTrackFriction;
+	trackRollResistance = wheel.trackRollResistance;
+
+	prevFn = wheel.prevFn;
+	prevFt = wheel.prevFt;
+}
+
 void Wheel::UpdateForces(double deltaTime)
 {
 	double angleZ = steer + pos.ang.z;

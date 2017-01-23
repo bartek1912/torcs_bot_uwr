@@ -32,13 +32,20 @@ Car::Car()
 
 void Car::set(CarState& cs)
 {
-	//
+	//Czy angle, distFromStart, trackPos nie powinno wpływać na pos.lin, pos.ang?
+	vel.lin = linalg::vector(cs.getSpeedX(), cs.getSpeedY(), 0 /*cs.getSpeedZ*/);	
+	for(int i=0; i<4;i++)
+	{
+		wheels[i]->spinVel = cs.getWheelSpinVel(i);
+	}
+	engine.setRpm(cs.getRpm());
+	engine.setGear(cs.getGear());
 }
 
-void Car::simulate(double delta, CarControl& c)
+void Car::simulate(double deltaTime, CarControl& c)
 {
-	//applyControl()
-	//updatePhysics()
+	applyControl(deltaTime, c.getSteer(), c.getBrake(), c.getAccel());
+	updatePhysics(deltaTime);
 }
 
 void Car::updateAcceleration(double deltaTime)
@@ -126,19 +133,39 @@ void Car::updatePhysics(double deltaTime)
 	updatePosition(deltaTime);
 }
 
-void Car::applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear, int rpm)
+void Car::applyControl(double deltaTime, double steer, double brake, double accel)
 {
 	this->steer->applySteer(steer, deltaTime);
 	this->brakeSystem->applyBrake(brake);
-	auto torque = engine.getTorque(accel, gear, rpm);
+	auto torque = engine.getTorque(accel);
 	wheels[REAR_LFT]->engineTorque += torque/2;
 	wheels[REAR_RGT]->engineTorque += torque/2;
 	//this->engine->applyEngine(aceel, gear, clutch);
 }
 
-Car* copy(Car* car)
+Car::Car(const Car& car)
 {
-	Car* newCar = new Car();
-	//TODO naprawic to
-	return newCar;
+	pos = car.pos;
+	vel = car.vel;
+	acc = car.acc;
+
+	for(int i=0;i<4;i++)
+	{
+		wheels[i] = new Wheel(*car.wheels[i]);
+		wheels[i]->car = this;
+	}
+
+	brakeSystem = new BrakeSystem(*car.brakeSystem);
+	brakeSystem->car = this;
+
+	steer = new Steer(*car.steer);
+	steer->car = this;
+
+	engine = Engine(car.engine);
+
+	mass = car.mass;
+	inertia = car.inertia;
+	wheelbase = car.wheelbase;
+	wheeltrack = car.wheeltrack;
+	dimensions = car.dimensions;
 }

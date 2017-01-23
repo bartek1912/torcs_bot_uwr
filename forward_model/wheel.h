@@ -54,6 +54,7 @@ struct Wheel
 	double prevFn, prevFt;
 
 	Wheel(int index, Car* car);
+	Wheel(const Wheel& wheel);
 
 	void UpdateForces(double deltaTime);
 };

@@ -4,7 +4,7 @@ double rpmToRads(double rpm)
 {
 	return rpm/5282*543.594;
 }
-double Engine::getTorque(double accel, int gear, double rpm)
+double Engine::getTorque(double accel)
 {
 	double rads = rpmToRads(rpm);
 	for(size_t i = 0; i < rpms.size(); i++)
@@ -17,3 +17,15 @@ int Engine::getNewRpm(int rpm)
 {
 	return rpm;
 }
+
+void Engine::setRpm(double newRpm)
+{
+	rpm = newRpm;
+}
+
+
+void Engine::setGear(int newGear)
+{
+	gear = newGear;
+}
+

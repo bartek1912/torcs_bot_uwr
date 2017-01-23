@@ -58,7 +58,9 @@ do {								\
 struct Car
 {
 	Car();
-	void simulate(double delta, CarControl& c);
+	Car(const Car& car);
+
+	void simulate(double deltaTime, CarControl& c);
 	void set(CarState& cs);
 //private://TODO to powinno być prywatne
 
@@ -71,9 +73,11 @@ struct Car
 	//2 potem updatePhysics(...)
 	//Po zrobieniu tego masz nowy stan
 	void updatePhysics(double deltaTime);
-	void applyControl(double deltaTime, double steer, double brake, double accel, double clutch, int gear, int rpm);	
+	void applyControl(double deltaTime, double steer, double brake, double accel);	
 
+	//Globalna pozycja
 	linalg::transform pos;
+	//Lokalne predkosci
 	linalg::transform vel;
 	linalg::transform acc;
 
@@ -89,11 +93,7 @@ struct Car
 	double wheeltrack;
 
 	linalg::vector dimensions;
-
-	friend Car* copy(Car* car);
 };
-
-Car* copy(Car* car);
 
 
 #endif //__CAR_H__

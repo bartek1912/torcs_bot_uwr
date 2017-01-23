@@ -14,6 +14,7 @@ struct BrakeSystem
 	Car* car;
 
 	BrakeSystem(Car* car);
+	BrakeSystem(const BrakeSystem& brakeSystem);
 
 	void applyBrake(double brake);
 };
@@ -31,6 +32,7 @@ struct Brake
 	double torque;
 
 	Brake(int index);
+	Brake(const Brake& brake);
 };
 
 #endif //__BRAKE_H__
