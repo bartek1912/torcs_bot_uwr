@@ -15,6 +15,7 @@
  ***************************************************************************/
 #include "SimpleDriver.h"
 #include "forward_model/ForwardModel.h"
+#define VERBOSE
 
 const double mnoznik_kier = 8.5711/2;
 
@@ -22,15 +23,20 @@ ForwardModel fModel;
 
 CarControl SimpleDriver::wDrive(CarState cs)
 {
+  #ifdef VERBOSE
 	if(cs.getCurLapTime() > 0)
 	{
 		cout << "Model after simulation:\n\tPosition = " << fModel.getCarState().pos.lin << "\n";
 		cout << "\tSpeed " << fModel.getCarState().vel.lin << "\n";
 		fModel.updateModel(cs);	
-		cout << "Model after update:\n";
-		cout << "\tSpeed " << fModel.getCarState().vel.lin << "\n";
-    cout << "\e[A\e[A\e[A\e[A\e[A\r";
 	}
+  cout << "Model after update:\n";
+  cout << "\tSpeed " << fModel.getCarState().vel.lin << "\n";;
+  if(cs.getCurLapTime() > 0)
+    cout << "\e[A\e[A\e[A\e[A\e[A\r";
+  else
+    cout << "\e[A\e[A\r";
+  #endif
 	
   calc.update_pos(cs);
   double dir;
