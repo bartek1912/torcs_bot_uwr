@@ -23,17 +23,21 @@ ForwardModel fModel;
 
 CarControl SimpleDriver::wDrive(CarState cs)
 {
-  #ifdef VERBOSE
+  static CarState before = cs;
 	if(cs.getCurLapTime() > 0)
 	{
+    #ifdef VERBOSE
+    cout << "Model before: Speed\t " << before.getSpeedX()<<"\t\t\t\n";
 		cout << "Model after simulation:\n\tPosition = " << fModel.getCarState().pos.lin << "\n";
 		cout << "\tSpeed " << fModel.getCarState().vel.lin << "\n";
+    #endif
 		fModel.updateModel(cs);	
 	}
+  #ifdef VERBOSE
   cout << "Model after update:\n";
   cout << "\tSpeed " << fModel.getCarState().vel.lin << "\n";;
   if(cs.getCurLapTime() > 0)
-    cout << "\e[A\e[A\e[A\e[A\e[A\r";
+    cout << "\e[A\e[A\e[A\e[A\e[A\e[A\r";
   else
     cout << "\e[A\e[A\r";
   #endif
@@ -45,7 +49,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
     if(cs.getTrack(i) > cs.getTrack(id_mx))
         id_mx = i;
   dir = -(id_mx - TRACK_SENSORS_NUM/2)/static_cast<double>(TRACK_SENSORS_NUM) * mnoznik_kier;
-  double acc = (cs.getSpeedX() > 50 ? 0.5: 1), br = 0;
+  double acc = (cs.getSpeedX() > 50 ? 1/*0.5*/: 1), br = 0;
   //100 - 30
   //200 - 60
   //300 - 270
@@ -61,7 +65,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
     || (cs.getTrack(id_mx) < 40 && cs.getTotalSpeed() > 100)
     || (cs.getTrack(id_mx) < 30 && cs.getTotalSpeed() > 85)
     || (cs.getTrack(id_mx) < 20 && cs.getTotalSpeed() > 70)
-    || cs.getSpeedX() > 70)
+    || cs.getSpeedX() > 270)
   {
     br = 0;
     acc = 0;
@@ -77,8 +81,8 @@ CarControl SimpleDriver::wDrive(CarState cs)
 	CarControl toReturn = CarControl(acc, br, cs.getGear(), dir, 0.00);
 
 	if(cs.getCurLapTime() > 0)
-		fModel.simulate(0.020, toReturn);
-
+		fModel.simulate(0.010, toReturn);
+  before = cs;
   return toReturn;
 } 
 

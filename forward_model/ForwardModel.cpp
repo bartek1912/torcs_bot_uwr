@@ -6,7 +6,7 @@ ForwardModel::ForwardModel() : car(Car())
 ForwardModel::
 	ForwardModel(CarState& cs):
 	car()
-{ }
+{ updateModel(cs);}
 
 void ForwardModel::updateModel(CarState& cs)
 {
