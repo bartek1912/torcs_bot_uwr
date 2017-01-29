@@ -56,6 +56,7 @@ struct Wheel
 	Wheel& operator = (const Wheel&);// = delete;
 	~Wheel();
 
+	void setCarMass(double carMass);
 	void UpdateForces(double deltaTime);
 };
 

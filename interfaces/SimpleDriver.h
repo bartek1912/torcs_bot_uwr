@@ -52,7 +52,28 @@ public:
 	virtual void init2(float* angles);
 
 private:
-	float filterABS(CarState &cs,float brake) const;
+	// counter of stuck steps
+	int stuck;
+	
+	// current clutch
+	float clutch;
+
+	// Solves the gear changing subproblems
+	int getGear(CarState &cs);
+
+	// Solves the steering subproblems
+	float getSteer(CarState &cs);
+	
+	// Solves the gear changing subproblems
+	float getAccel(CarState &cs);
+	
+	// Apply an ABS filter to brake command
+	float filterABS(CarState &cs,float brake);
+
+	// Solves the clucthing subproblems
+	void clutching(CarState &cs, float &clutch);
+
+	CarControl simpleDriving(CarState &cs);
 
 	/* ABS Filter Constants */
 	
@@ -64,6 +85,35 @@ private:
 	static const float absRange;
 	// min speed to activate ABS
 	static const float absMinSpeed;
+
+	static const int gearUp[6];
+	static const int gearDown[6];
+
+	/* Stuck static constants*/
+	static const int stuckTime;
+	static const float stuckAngle; //PI/6
+
+	/* Accel and Brake Constants*/
+	static const float maxSpeedDist;
+	static const float maxSpeed;
+	static const float sin5;
+	static const float cos5;
+
+	/* Steering static constants*/
+	static const float steerLock;
+	static const float steerSensitivityOffset;
+	static const float wheelSensitivityCoeff;
+
+	/* Clutch static constants */
+	static const float clutchMax;
+	static const float clutchDelta;
+	static const float clutchRange;
+	static const float clutchDeltaTime;
+	static const float clutchDeltaRaced;
+	static const float clutchDec;
+	static const float clutchMaxModifier;
+	static const float clutchMaxTime;
+
 	Track_model track;
 	CarCalculator calc;
 };

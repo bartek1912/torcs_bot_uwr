@@ -30,9 +30,10 @@ void Steer::applySteer(double newSteer, double deltaTime)
 	deltaSteer = newSteer - oldSteer;
 
 	if ((fabs(deltaSteer) / deltaTime) > maxSpeed) {
-		steer = SIGN(deltaSteer) * maxSpeed * deltaTime + oldSteer;
+		newSteer = SIGN(deltaSteer) * maxSpeed * deltaTime + oldSteer;
 	}
 
+	steer = newSteer;
 	tanSteer = fabs(tan(steer));
 	steer2 = atan2((car->wheelbase * tanSteer) , (car->wheelbase - tanSteer * car->wheeltrack));
 

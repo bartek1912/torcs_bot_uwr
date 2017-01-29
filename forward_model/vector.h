@@ -8,6 +8,7 @@
 #include <math.h>
 
 const double PI = 3.14159265358979323846;  /**< PI */
+const double EPS = 1e-9;  /**< EPS */
 
 /** Angle normalization between 0 and 2 * PI */
 #define NORM0_2PI(x) 				\
@@ -76,6 +77,19 @@ namespace linalg
 		NORM_PI_PI(vec.x);
 		NORM_PI_PI(vec.y);
 		NORM_PI_PI(vec.z);
+   }
+
+   inline void removeNoise(vector& vec)
+   {
+	   if(fabs(vec.x) < EPS) vec.x = 0;
+	   if(fabs(vec.y) < EPS) vec.y = 0;
+	   if(fabs(vec.z) < EPS) vec.z = 0;
+   }
+
+   inline void removeNoise(transform& tra)
+   {
+	   removeNoise(tra.lin);
+	   removeNoise(tra.ang);
    }
 
 

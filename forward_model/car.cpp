@@ -17,6 +17,8 @@ wheels{Wheel(0, this),Wheel(1, this),Wheel(2, this),Wheel(3, this)}
 				- wheels[REAR_LFT].pos.lin.y) / 2.0;
 
 	mass = 1150;
+	for(int i=0;i<4;i++)
+		wheels[i].setCarMass(mass);
 
 	dimensions = {4.7, 1.9, 1.2};
 	inertia = 
@@ -29,7 +31,7 @@ wheels{Wheel(0, this),Wheel(1, this),Wheel(2, this),Wheel(3, this)}
 void Car::set(CarState& cs)
 {
 	//Czy angle, distFromStart, trackPos nie powinno wpływać na pos.lin, pos.ang?
-	vel.lin = linalg::vector(cs.getSpeedX(), cs.getSpeedY(), 0 /*cs.getSpeedZ*/);	
+	vel.lin = (1000./3600.) * linalg::vector(cs.getSpeedX(), cs.getSpeedY(), 0 /*cs.getSpeedZ*/);	
 	for(int i=0; i<4;i++)
 	{
 		wheels[i].spinVel = cs.getWheelSpinVel(i);
@@ -90,12 +92,16 @@ void Car::updateAcceleration(double deltaTime)
 	acc.ang.x = totalTorque.x / inertia.x; 
 	acc.ang.y = totalTorque.y / inertia.y; 
 	acc.ang.z = (totalTorque.z - Rmoment) / inertia.z; 
+
+	linalg::removeNoise(acc);
 }
 
 void Car::updateVelocity(double deltaTime)
 {
 	vel.lin += acc.lin * deltaTime;
 	vel.ang += acc.ang * deltaTime;
+
+	linalg::removeNoise(vel);
 }
 
 void Car::updatePosition(double deltaTime)
@@ -115,7 +121,10 @@ void Car::updatePosition(double deltaTime)
 	{
 		wheels[i].globalPos.lin = pos.lin + rotationMatrix * wheels[i].pos.lin; 
 		//wheels[i]->globalPos.ang nas nie obchodzi
+		linalg::removeNoise(wheels[i].globalPos);
 	}
+	
+	linalg::removeNoise(pos);
 }
 
 void Car::updatePhysics(double deltaTime)
@@ -134,8 +143,8 @@ void Car::applyControl(double deltaTime, double steer, double brake, double acce
 	this->steer.applySteer(steer, deltaTime);
 	this->brakeSystem.applyBrake(brake);
 	auto torque = engine.getTorque(accel);
-	wheels[REAR_LFT].engineTorque += torque/2;
-	wheels[REAR_RGT].engineTorque += torque/2;
+	wheels[REAR_LFT].engineTorque += torque/2.;
+	wheels[REAR_RGT].engineTorque += torque/2.;
 	//this->engine->applyEngine(aceel, gear, clutch);
 }
 

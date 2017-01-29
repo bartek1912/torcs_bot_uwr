@@ -133,6 +133,14 @@ Wheel& Wheel::operator = (const Wheel& wheel)
 	return (*this);
 }
 
+void Wheel::setCarMass(double carMass)
+{
+	if(index < 2)
+		weightOnWheel = (carMass * 0.5 * 1.372800) / (1.267200 * (1 + 1.372800)) * G;
+	else
+		weightOnWheel = (carMass * 0.5 * 1.267200) / (1.372800 * (1 + 1.267200)) * G;
+}
+
 void Wheel::UpdateForces(double deltaTime)
 {
 	double angleZ = steer + pos.ang.z;
@@ -194,6 +202,22 @@ void Wheel::UpdateForces(double deltaTime)
 	RELAXATION2(Fn, prevFn, 50.0f);
 	RELAXATION2(Ft, prevFt, 50.0f);
 
+	/*
+	cout << "WHEEL " << index << "\n";
+
+	cout << "\tF = " << F << "\n";
+	cout << "\tFt = " << Ft << "\n";
+	cout << "\tFn = " << Fn << "\n";
+	cout << "\tweightOnWheel = " << weightOnWheel << "\n";
+
+	cout << "\tPos.ang.z = " << pos.ang.z <<"\n";
+	cout << "\tsteer = " << steer <<"\n";
+	cout << "\tangleZ = " << angleZ <<"\n";
+	cout << "\tcosAngZ = " << cosAngZ <<"\n";
+	cout << "\tsinAngZ = " << sinAngZ <<"\n";
+	cout << "\tslipAng = " << slipAng <<"\n";
+	*/
+
 	force.x = Ft * cosAngZ - Fn * sinAngZ;
 	force.y = Ft * sinAngZ + Fn * cosAngZ;
 
@@ -236,9 +260,11 @@ void UpdatePropelledWheels(Car* car, int axleNumber, double deltaTime)
 		wheel = &car->wheels[i];
 
 		ndot = deltaTime * wheel->engineTorque / wheel->inertia;
+		//cout << "\tWheel " << i << " engine ndot = " << ndot << "\n";
 		wheel->spinVel += ndot;
 
 		ndot = deltaTime * wheel->spinTorque / wheel->inertia;
+		//cout << "\tWheel " << i << " spin ndot = " << ndot << "\n";
 		wheel->spinVel -= ndot;
 
 		BrTq = - SIGN(wheel->spinVel) * wheel->brake->torque;
@@ -247,6 +273,7 @@ void UpdatePropelledWheels(Car* car, int axleNumber, double deltaTime)
 		if (fabs(ndot) > fabs(wheel->spinVel)) {
 			ndot = -wheel->spinVel;
 		}
+		//cout << "\tWheel " << i << " brake ndot = " << ndot << "\n";
 
 		wheel->spinVel += ndot;
 	}

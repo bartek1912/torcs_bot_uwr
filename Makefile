@@ -14,8 +14,8 @@ FORWARD_MODEL_LIST = matrix.o car.o steer.o brake.o wheel.o quaternion.o Forward
 
 EXTFLAGS = -D __DRIVER_CLASS__=$(DRIVER_CLASS) -D __DRIVER_INCLUDE__=$(DRIVER_INCLUDE)
 
-OBJECTS = WrapperBaseDriver.o track_model.o SimpleParser.o CarState.o CarControl.o  $(FORWARD_MODEL_LOCATIONS) $(DRIVER_OBJ)
-OBJECTS_LOCATIONS = WrapperBaseDriver.o track_model.o SimpleParser.o CarState.o CarControl.o  $(FORWARD_MODEL_LIST) $(DRIVER_OBJ)
+OBJECTS = WrapperBaseDriver.o track_model.o SimpleParser.o CarState.o CarControl.o TrackModel.o $(FORWARD_MODEL_LOCATIONS) $(DRIVER_OBJ)
+OBJECTS_LOCATIONS = WrapperBaseDriver.o track_model.o SimpleParser.o CarState.o CarControl.o TrackModel.o  $(FORWARD_MODEL_LIST) $(DRIVER_OBJ)
 
 all: $(OBJECTS) client
 
