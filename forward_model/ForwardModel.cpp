@@ -15,7 +15,8 @@ void ForwardModel::updateModel(CarState& cs)
 
 void ForwardModel::simulate(double deltaTime, CarControl& c)
 {
-	car.simulate(deltaTime, c);
+	for(double act = 0.0; act < deltaTime; act+= 0.002)
+		car.simulate(act, c);
 }
 
 Car ForwardModel::getCarState()

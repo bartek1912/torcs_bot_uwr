@@ -65,7 +65,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
     || (cs.getTrack(id_mx) < 40 && cs.getTotalSpeed() > 100)
     || (cs.getTrack(id_mx) < 30 && cs.getTotalSpeed() > 85)
     || (cs.getTrack(id_mx) < 20 && cs.getTotalSpeed() > 70)
-    || cs.getSpeedX() > 270)
+    || cs.getSpeedX() > 70)
   {
     br = 0;
     acc = 0;
