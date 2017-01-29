@@ -4,7 +4,7 @@
 using namespace std;
 class Engine
 {
-	double rpm = 0;
+	double rpm;
 	int gear;
 
 	vector<double> rpms;
@@ -13,8 +13,11 @@ class Engine
 public:
 	Engine();
 	double getTorque(double);
+	double getGearMul();
 	int getNewRpm(int rpm);
 	void setRpm(double newRpm);
 	void setGear(int newGear);
+private:
+	double getEngineTorque(double);
 };
 #endif

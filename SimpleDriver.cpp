@@ -43,6 +43,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
 	else
 	{
 	  #ifdef VERBOSE
+	  static CarState before = cs;
 		cout << "TrackPos " << cs.getTrackPos() << "\n";
 		cout << "Left + Right = " << cs.getTrack(0) + cs.getTrack(18) << "\n";
 		cout << "DistFromStart = " << cs.getDistFromStart() << "\n";
@@ -87,7 +88,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
 		if(cs.getTrack(i) > cs.getTrack(id_mx))
 			id_mx = i;
 	  dir = -(id_mx - TRACK_SENSORS_NUM/2)/static_cast<double>(TRACK_SENSORS_NUM) * mnoznik_kier;
-	  double acc = (cs.getSpeedX() > 50 ? 0.5: 1), br = 0;
+	  double acc = (cs.getSpeedX() > 50 ? 1/*0.5*/: 1), br = 0;
 	  //100 - 30
 	  //200 - 60
 	  //300 - 270
@@ -121,6 +122,7 @@ CarControl SimpleDriver::wDrive(CarState cs)
 		if(cs.getCurLapTime() > 0)
 			fModel.simulate(0.020, toReturn);
 
+	  before = cs;
 	  return toReturn;
 	}
 } 

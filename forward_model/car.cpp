@@ -143,9 +143,8 @@ void Car::applyControl(double deltaTime, double steer, double brake, double acce
 	this->steer.applySteer(steer, deltaTime);
 	this->brakeSystem.applyBrake(brake);
 	auto torque = engine.getTorque(accel);
-	wheels[REAR_LFT].engineTorque += torque/2.;
-	wheels[REAR_RGT].engineTorque += torque/2.;
-	//this->engine->applyEngine(aceel, gear, clutch);
+	wheels[REAR_LFT].engineTorque += torque/2;
+	wheels[REAR_RGT].engineTorque += torque/2;
 }
 
 Car::Car(const Car& car)
