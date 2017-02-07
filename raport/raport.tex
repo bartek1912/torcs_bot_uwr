@@ -35,11 +35,88 @@
 \title{\textbf{Projekt ze sztucznej inteligencji w grach} \\  Sztuczna inteligencja do TORCS}
 \begin{document}
 \maketitle
-\section{Wstęp}
 
+\tableofcontents
+
+\section{TORCS}
+
+\subsection{Czym jest TORCS}
+TORCS (The Open Racing Car Simulator) to wieloplatformowy i dostępny na licencji open source trójwymiarowy symulator wyścigów samochodowych. Jest on rozwijany od 20 lat - posiada mnóstwo samochodów, torów wyścigowych. Symulacje mogą uwzględniać proste kolizje, zużycie paliwa, aerodynamikę, poślizgi i wiele więcej. Ze względu na dojrzałość API istnieje wiele rozszerzeń i dodatków. Dodatkowo co roku organizowane są zawody w programowaniu botów do symulatora.
+
+\begin{figure}[H]
+	\centering
+    \includegraphics[width=0.8\textwidth]{torcs.png}
+    \caption{Początek przejazdu okrążenia na torze Forza}
+\end{figure}
+\subsection{Zasady}
+Gra odbywa się w czasie rzeczywistym - jeden tick gry trwa 20ms. Silnik odpytuje boty i czeka 10 ms na odpowiedź. Bot może być napisany w dowolnym języku, jednak wygodne API zostało napisane tylko do Javy i C++.\\
+Zawody składają się z 3 części:\\
+\begin{itemize}
+\item Warm-up - 10 okrążeń na zpoznanie się z torem
+\item Kwalifikacje - 3 okrążenia na czas
+\item Wyścig - około 500km
+\end{itemize}
+\subsection{Wiedza o stanie gry}
+Pełna tabela informacji dostępnych w trakcie gry znajduje się w bibliografii, tutaj znajduje się skrócona lista najistotniejszych elementów:
+\begin{itemize}
+\item distFromStart - dystans wzdłuż linii toru, który przejechaliśmy od startu
+\item gear - bieg w samochodzie
+\item rpm - obroty silnika
+\item speedX, speedY, speedZ - odpowiednio prędkość samochodu równolegle do kierunku jazdy,  prędkość pozioma, prostdła do kierunku jazdy oraz prędkość pionowa
+\item track - wektor 19 sensorów oznaczające odleglości krawędzi toru/innych samochodów. Ustawiamy kąty pod jakimi są ustawione sensory na początku wyścigu. Maksymalny zasięg widzenia sensorów to 200m. Dodatkowo w trakcie wyścigu sensory są zaburzane szumem o rozkładzie normalnym i odchyleniu 10%.
+\item trackPos - pozycja na torze. -1 oznacza prawą krawędź tory, +1 lewą krawędź. Gdy \(|trackPos| > 1\), to jesteśmy poza torem.
+\end{itemize}
+\subsection{Możliwe Akcje}
+\begin{figure}[H]
+	\centering
+    \includegraphics[width=0.8\textwidth]{inputs.png}
+    \caption{Tabelka przedstawia dane, które dostajemy co tick gry.}
+\end{figure}
 
 \section{Metody sztucznej inteligencji}
+\subsection{Metody heurystyczne}
+Każda z metod w tej sekcji jest oparta na prostej heurystyce przy wybieraniu toru jazdy - zawsze jeźdzmy w tą stronę w którą mamy największą wolną przestrzeń(sensor pokazuje największą wartość).
+\subsubsection{Podejście 1}
 
+Ta prosta heurystyka daje dość dobre przybliżenie optymalnego toru - samochód bardzo dobrze ścina zakręty, jednak nie zawsze dobrze się do nich ustawia.
+Dzięki zastosowaniu tej funkcji znacznie upraszczamy problem - wystarczy jedynie dobrze ustalać prędkości wchodzenia i wychodzenia z zakrętów. W pierwszym podejściu prędkość jest ustalana na podstawie wartości \(c_{min}\) zdefiniowanej następująco:\\
+\[c_{min} = min { T(-15), T(-10), T(-5), T(0), T(5), T(10), T(15)} \]
+gdzie \(T(x)\) oznacza track-sensor ustawiony pod kątem x stopni.\\
+Oto tabelka przedstawiająca znalezione przeze mnie wartości, które pozwalają w miarę bezpiecznie (bez wyjeżdżania poza granice toru) zrobić okrążenie w rozsądnym czasie:
+
+\begin{tabular}{|r|l|} \hline
+\(c_{min}\) & maksymalna prędkość\\
+\hline 
+\(>150\)    & max \\
+(100, 150] & 260 km/h \\
+(60, 100] & 220 km/h \\
+(50, 60] & 150 km/h \\
+(40, 50] & 120 km/h \\
+(30, 40] & 100 km/h \\
+(20, 30] & 85 km/h \\
+(0, 20] & 70 km/h \\
+\hline 
+\end{tabular}\\\\
+Dzięki tak dobranym parametrom, samochód jest w stanie przejeżdżać okrążenie na torze Forza w czasie 2 min (boty robią to w czasie ~1 min 30 s). Z moich obserwacji wynika, że bardzo często samochód za wolno jechał przez pewne sekcje torów - niezbędne było inne podejście.
+\subsubsection{Podejście 2}
+Bez znajomości toru nie są możliwe drastyczne zmiany prędkości - zwiększanie prędkości granicznych powodowało wypadanie w innych sekcjach toru. Z tego powodu algorytm uległ zmianie - pierwsze okrążenie samochód przejeżdża okrążenie algorytmem starym algorytmem zapamiętując miejsca w których zaczynają się i kończą zakręty oraz prędkości z jakimi w nie wszedł. Następnie co okrążenie próbuje zwiększyć każdą z tych prędkości o zmniejszającą się wartość \(K\). Jeśli samochód po zwiększeniu prędkości wypadnie z toru nie zwiększamy wartości przypisanych sekcji toru. Oto kilka czasów z przykładowego przejazdu po torze Forza:\\
+
+\begin{tabular}{|r|c|c|} \hline
+Nr okrążenia & Czas (minuty:sekundy:milisekundy) & Ilość wypadnięć\\
+\hline 
+1 & 2:00:190 & 0 \\
+2 & 1:59:930 & 1 \\
+3 & 2:10:830 & 2 \\
+4 & 2:09:370 & 2 \\
+5 & 1:50:970 & 0 \\
+6 & 2:06:540 & 2 \\
+7 & 1:48:790 & 0 \\
+12 & 1:46:710 & 0 \\
+17 & 1:42:610 & 0 \\
+\hline 
+\end{tabular}\\\\
+
+Czasy zostały znacznie poprawione. Samochód odczytuje obecną odległość do zakrętu i oblicza drogę potrzebną do zwolnienia do zadanej prędkości - na tej podstawie decyduje czy zwolnić czy przyspieszyć. Uzyskane czasy są zadawalające, jednak ich wyuczenie trwa długo i mocno zależy od toru.
 \subsection{Uniwersalny Q-Learning}
 
 Celem tej metody jest nauczenie komputera wydajnego jeżdżenia samochodem na dowolnej trasie.
@@ -132,6 +209,13 @@ Po ponad tygodniu nauki najlepszy czas, jaki osiągnął komputer w jakimś prze
 \bibitem{WikiQLearning}
 \emph{Q-Learning},
 \url{https://en.wikipedia.org/wiki/Q-learning}
+\bibitem{Requlamin}
+\emph{Regulamin wyścigów},
+\url{http://www.berniw.org/trb/events/rules_view.php?viewrulesid=23#c8}
+\bibitem{Helpers}
+\emph{Simulated Car Racing Championship
+Competition Software Manual},
+\url{https://arxiv.org/pdf/1304.1672v2.pdf}
 
 \end{thebibliography}
 
